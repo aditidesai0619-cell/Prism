@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String            @id @default(cuid())
+  email            String            @unique
+  password         String
+  createdAt        DateTime          @default(now()) @map("created_at")
+  evaluations      Evaluation[]
+  essayEvaluations EssayEvaluation[]
+
+  @@map("users")
+}
+
+model Evaluation {
+  id                String   @id @default(cuid())
+  userId            String   @map("user_id")
+  question          String
+  answerText        String   @map("answer_text")
+  wordLimit         Int      @map("word_limit")
+  score             Float
+  strengths         String[]
+  weaknesses        String[]
+  suggestions       String[]
+  overallFeedback   String   @map("overall_feedback")
+  coveredDimensions String[] @map("covered_dimensions")
+  missingDimensions String[] @map("missing_dimensions")
+  idealStructure    String   @default("") @map("ideal_structure")
+  wordEconomy       String   @default("") @map("word_economy")
+  versionNumber     Int      @default(1) @map("version_number")
+  parentId          String?  @map("parent_id")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parent   Evaluation?  @relation("EvaluationVersions", fields: [parentId], references: [id])
+  children Evaluation[] @relation("EvaluationVersions")
+
+  @@map("evaluations")
+}
+
+model EssayEvaluation {
+  id                String   @id @default(cuid())
+  userId            String   @map("user_id")
+  topic             String
+  wordLimit         Int      @map("word_limit")
+  essayText         String   @map("essay_text")
+  score             Float
+  strengths         String[]
+  weaknesses        String[]
+  suggestions       String[]
+  coveredDimensions String[] @map("covered_dimensions")
+  missingDimensions String[] @map("missing_dimensions")
+  structureFeedback String   @map("structure_feedback")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("essay_evaluations")
+}

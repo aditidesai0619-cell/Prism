@@ -15,15 +15,20 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
+        const t0 = Date.now();
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
+          select: { id: true, email: true, password: true },
         });
+        console.log(`[auth] db lookup: ${Date.now() - t0}ms`);
 
         if (!user) return null;
 
+        const t1 = Date.now();
         const valid = await bcrypt.compare(credentials.password, user.password);
-        if (!valid) return null;
+        console.log(`[auth] bcrypt.compare: ${Date.now() - t1}ms`);
 
+        if (!valid) return null;
         return { id: user.id, email: user.email };
       },
     }),

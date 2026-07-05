@@ -23,11 +23,11 @@ export default function LandingCTA() {
           className="text-base font-body"
           style={{ color: "#666666", lineHeight: 1.7 }}
         >
-          Join PRISM and get AI-powered mentor feedback on your UPSC answers.
+          Get AI-powered mentor feedback on your UPSC answers.
           No fluff. Just precise, actionable improvement.
         </p>
         <Link
-          href="/signup"
+          href="/evaluate"
           className="flex items-center gap-2 px-10 py-4 rounded-xl text-base font-display font-bold"
           style={{
             background: "#FFD700",
@@ -52,7 +52,7 @@ export default function LandingCTA() {
             (e.currentTarget as HTMLElement).style.transform = "scale(1.03)";
           }}
         >
-          Start for Free
+          Start Evaluating
           <ArrowRight size={18} />
         </Link>
       </div>

@@ -39,12 +39,12 @@ export default function Footer() {
             History
           </Link>
           <Link
-            href="/login"
+            href="/progress"
             style={{ color: "#555555", transition: "color 150ms ease" }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#f0f0f0"; }}
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#555555"; }}
           >
-            Login
+            Progress
           </Link>
         </div>
 

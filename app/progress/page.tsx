@@ -114,18 +114,18 @@ export default async function ProgressPage() {
       : 0;
 
   return (
-    <div className="min-h-screen pt-20 pb-16" style={{ background: "#f2f2f2" }}>
+    <div className="min-h-screen pt-20 pb-16" style={{ background: "#0a0a0a" }}>
       <div className="max-w-6xl mx-auto px-6">
         <div className="py-8 flex flex-col gap-1">
           <div className="flex items-center gap-2">
-            <TrendingUp size={16} style={{ color: "#666666" }} />
-            <span className="text-xs font-body uppercase tracking-widest" style={{ color: "#999999" }}>
+            <TrendingUp size={16} style={{ color: "#888888" }} />
+            <span className="text-xs font-body uppercase tracking-widest" style={{ color: "#777777" }}>
               Analytics
             </span>
           </div>
           <h1
             className="font-display font-black text-3xl md:text-4xl"
-            style={{ color: "#0a0a0a", letterSpacing: "-0.04em" }}
+            style={{ color: "#f0f0f0", letterSpacing: "-0.04em" }}
           >
             Your Dashboard
           </h1>
@@ -136,11 +136,11 @@ export default async function ProgressPage() {
 
         {allEvals.length === 0 ? (
           <div
-            className="rounded-2xl p-16 flex flex-col items-center justify-center text-center gap-4 bg-white"
-            style={{ boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
+            className="rounded-2xl p-16 flex flex-col items-center justify-center text-center gap-4"
+            style={{ background: "#111111", boxShadow: "0 1px 4px rgba(0,0,0,0.3)" }}
           >
-            <TrendingUp size={40} style={{ color: "#cccccc" }} />
-            <h3 className="font-display font-bold text-xl" style={{ color: "#0a0a0a" }}>
+            <TrendingUp size={40} style={{ color: "#444444" }} />
+            <h3 className="font-display font-bold text-xl" style={{ color: "#f0f0f0" }}>
               No data yet
             </h3>
             <p className="text-sm font-body" style={{ color: "#888888" }}>

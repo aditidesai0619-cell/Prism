@@ -33,7 +33,6 @@ export const ALL_DIMENSIONS: Dimension[] = [
 
 export interface Evaluation {
   id: string;
-  user_id: string;
   created_at: string;
   question: string;
   word_limit: number;
@@ -81,7 +80,6 @@ export interface ComparisonResult {
 
 export interface EssayEvaluation {
   id: string;
-  user_id: string;
   created_at: string;
   topic: string;
   word_limit: number;
@@ -111,7 +109,3 @@ export interface EssayEvaluationResult {
   structure_feedback: string;
 }
 
-export interface User {
-  id: string;
-  email: string;
-}

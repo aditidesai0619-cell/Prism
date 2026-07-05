@@ -1,16 +1,9 @@
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ALL_DIMENSIONS } from "@/types";
 import ProgressClient from "@/components/progress/ProgressClient";
 import { TrendingUp } from "lucide-react";
 
 export default async function ProgressPage() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user?.id) redirect("/login");
-
-  const userId = session.user.id;
   const now = new Date();
   const ninetyDaysAgo = new Date(now.getTime() - 90 * 24 * 60 * 60 * 1000);
   const thisWeekStart = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -18,12 +11,10 @@ export default async function ProgressPage() {
 
   const [evaluations, essayEvaluations] = await Promise.all([
     prisma.evaluation.findMany({
-      where: { userId },
       orderBy: { createdAt: "asc" },
       select: { score: true, coveredDimensions: true, missingDimensions: true, createdAt: true },
     }),
     prisma.essayEvaluation.findMany({
-      where: { userId },
       orderBy: { createdAt: "asc" },
       select: { score: true, coveredDimensions: true, missingDimensions: true, createdAt: true },
     }),

@@ -1,18 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { evaluateEssay } from "@/lib/ai/essayEvaluator";
 import { EssayEvaluationInput } from "@/types";
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
-
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
     const body: EssayEvaluationInput = await request.json();
     const { topic, word_limit, essay_text } = body;
 
@@ -27,7 +19,6 @@ export async function POST(request: NextRequest) {
 
     const saved = await prisma.essayEvaluation.create({
       data: {
-        userId: session.user.id,
         topic: topic.trim(),
         wordLimit: word_limit,
         essayText: essay_text.trim(),
@@ -43,7 +34,6 @@ export async function POST(request: NextRequest) {
 
     const evaluation = {
       id: saved.id,
-      user_id: saved.userId,
       topic: saved.topic,
       word_limit: saved.wordLimit,
       essay_text: saved.essayText,

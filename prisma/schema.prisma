@@ -7,20 +7,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id               String            @id @default(cuid())
-  email            String            @unique
-  password         String
-  createdAt        DateTime          @default(now()) @map("created_at")
-  evaluations      Evaluation[]
-  essayEvaluations EssayEvaluation[]
-
-  @@map("users")
-}
-
 model Evaluation {
   id                String   @id @default(cuid())
-  userId            String   @map("user_id")
   question          String
   answerText        String   @map("answer_text")
   wordLimit         Int      @map("word_limit")
@@ -37,7 +25,6 @@ model Evaluation {
   parentId          String?  @map("parent_id")
   createdAt         DateTime @default(now()) @map("created_at")
 
-  user     User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   parent   Evaluation?  @relation("EvaluationVersions", fields: [parentId], references: [id])
   children Evaluation[] @relation("EvaluationVersions")
 
@@ -46,7 +33,6 @@ model Evaluation {
 
 model EssayEvaluation {
   id                String   @id @default(cuid())
-  userId            String   @map("user_id")
   topic             String
   wordLimit         Int      @map("word_limit")
   essayText         String   @map("essay_text")
@@ -58,8 +44,6 @@ model EssayEvaluation {
   missingDimensions String[] @map("missing_dimensions")
   structureFeedback String   @map("structure_feedback")
   createdAt         DateTime @default(now()) @map("created_at")
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("essay_evaluations")
 }

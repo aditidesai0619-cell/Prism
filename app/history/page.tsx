@@ -1,25 +1,14 @@
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
-import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { Evaluation } from "@/types";
 import HistoryClient from "@/components/evaluation/HistoryClient";
 
 export default async function HistoryPage() {
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user?.id) {
-    redirect("/login");
-  }
-
   const rows = await prisma.evaluation.findMany({
-    where: { userId: session.user.id },
     orderBy: { createdAt: "desc" },
   });
 
   const evaluations: Evaluation[] = rows.map((e) => ({
     id: e.id,
-    user_id: e.userId,
     question: e.question,
     answer_text: e.answerText,
     word_limit: e.wordLimit,

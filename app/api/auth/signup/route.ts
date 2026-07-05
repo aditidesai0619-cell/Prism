@@ -20,16 +20,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const existing = await prisma.user.findUnique({ where: { email } });
-    if (existing) {
-      return NextResponse.json(
-        { error: "An account with this email already exists" },
-        { status: 409 }
-      );
-    }
-
     const hash = await bcrypt.hash(password, 10);
-    await prisma.user.create({ data: { email, password: hash } });
+
+    try {
+      await prisma.user.create({ data: { email, password: hash } });
+    } catch (err) {
+      if ((err as { code?: string }).code === "P2002") {
+        return NextResponse.json(
+          { error: "An account with this email already exists" },
+          { status: 409 }
+        );
+      }
+      throw err;
+    }
 
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (err) {
